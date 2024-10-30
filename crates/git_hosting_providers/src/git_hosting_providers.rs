@@ -4,11 +4,12 @@ use std::sync::Arc;
 
 use git::GitHostingProviderRegistry;
 use gpui::AppContext;
+use project::project_settings::GitHostProvider;
 
 pub use crate::providers::*;
 
 /// Initializes the Git hosting providers.
-pub fn init(cx: &mut AppContext) {
+pub fn init(cx: &mut AppContext, git_host_provider_settings: GitHostProvider) {
     let provider_registry = GitHostingProviderRegistry::global(cx);
 
     // The providers are stored in a `BTreeMap`, so insertion order matters.
@@ -23,4 +24,8 @@ pub fn init(cx: &mut AppContext) {
     provider_registry.register_hosting_provider(Arc::new(Bitbucket));
     provider_registry.register_hosting_provider(Arc::new(Sourcehut));
     provider_registry.register_hosting_provider(Arc::new(Codeberg));
+
+    provider_registry.register_hosting_provider(Arc::new(CustomizeGitProvider::new(
+        git_host_provider_settings,
+    )));
 }

@@ -71,7 +71,7 @@ pub enum DirenvSettings {
     Direct,
 }
 
-#[derive(Copy, Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
 pub struct GitSettings {
     /// Whether or not to show the git gutter.
     ///
@@ -83,6 +83,8 @@ pub struct GitSettings {
     ///
     /// Default: on
     pub inline_blame: Option<InlineBlameSettings>,
+
+    pub host_provider: Option<GitHostProvider>,
 }
 
 impl GitSettings {
@@ -133,6 +135,13 @@ pub struct InlineBlameSettings {
     ///
     /// Default: 0
     pub min_column: Option<u32>,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub struct GitHostProvider {
+    pub provider: String,
+    pub host: Option<String>,
 }
 
 const fn true_value() -> bool {

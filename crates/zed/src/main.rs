@@ -475,7 +475,7 @@ fn main() {
         <dyn Fs>::set_global(fs.clone(), cx);
 
         GitHostingProviderRegistry::set_global(git_hosting_provider_registry, cx);
-        git_hosting_providers::init(cx);
+        git_hosting_providers::init(cx, ProjectSettings::get_global(cx).git.host_provider);
 
         OpenListener::set_global(cx, open_listener.clone());
 
